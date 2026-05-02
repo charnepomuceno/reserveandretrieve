@@ -4,161 +4,164 @@ import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { mockNotifications, mockLostFoundItems } from '@/lib/mock-data';
-import { Bell, Package, AlertCircle, Eye } from 'lucide-react';
-import Link from 'next/link';
+import { mockLostFoundItems } from '@/lib/mock-data';
+import { useRouter } from 'next/navigation';
+import { Package, FileText, Bell, ArrowRight } from 'lucide-react';
 
 export default function StudentDashboard() {
-  const recentLostFound = mockLostFoundItems.slice(0, 2);
-  const recentNotifications = mockNotifications.slice(0, 3);
+  const router = useRouter();
+  const recentItems = mockLostFoundItems.slice(0, 3);
+  const unclaimedCount = mockLostFoundItems.filter((i) => i.status === 'unclaimed').length;
 
-  const statusColors = {
-    lost: 'bg-red-100 text-red-800',
-    found: 'bg-blue-100 text-blue-800',
-    claimed: 'bg-green-100 text-green-800',
-    unclaimed: 'bg-yellow-100 text-yellow-800',
+  const stats = {
+    itemsFound: mockLostFoundItems.filter((i) => i.status === 'found').length,
+    unclaimed: unclaimedCount,
+    browsing: mockLostFoundItems.length,
   };
 
   return (
     <DashboardLayout>
       <div className="p-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Dashboard</h1>
-        <p className="text-gray-600 mb-8">Student Portal - Track lost items and stay updated</p>
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Student Dashboard</h1>
+          <p className="text-gray-600">Manage your lost items and browse found items</p>
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-          {/* Quick Stats */}
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card>
-            <CardContent className="pt-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Active Reports</p>
-                  <p className="text-3xl font-bold text-gray-900">{mockLostFoundItems.length}</p>
-                </div>
-                <Package className="w-10 h-10 text-blue-500" />
-              </div>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium text-gray-600 flex items-center gap-2">
+                <Package className="w-4 h-4" />
+                Items Available
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold text-blue-600">{stats.browsing}</p>
+              <p className="text-xs text-gray-500 mt-1">in the lost & found</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="pt-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Unread Alerts</p>
-                  <p className="text-3xl font-bold text-gray-900">
-                    {mockNotifications.filter((n) => !n.read).length}
-                  </p>
-                </div>
-                <Bell className="w-10 h-10 text-blue-500" />
-              </div>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium text-gray-600 flex items-center gap-2">
+                <Bell className="w-4 h-4" />
+                Unclaimed Items
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold text-yellow-600">{stats.unclaimed}</p>
+              <p className="text-xs text-gray-500 mt-1">awaiting owner claim</p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="pt-6">
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">Items Claimed</p>
-                  <p className="text-3xl font-bold text-gray-900">
-                    {mockLostFoundItems.filter((i) => i.status === 'claimed').length}
-                  </p>
-                </div>
-                <AlertCircle className="w-10 h-10 text-blue-500" />
-              </div>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium text-gray-600 flex items-center gap-2">
+                <FileText className="w-4 h-4" />
+                My Reports
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-bold text-green-600">{mockLostFoundItems.length}</p>
+              <p className="text-xs text-gray-500 mt-1">reports submitted</p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Lost & Found Activity */}
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle className="flex items-center gap-2">
-                  <Package className="w-5 h-5 text-blue-600" />
-                  Recent Lost & Found Items
-                </CardTitle>
-                <Link href="/student/lost-found">
-                  <Button variant="ghost" size="sm">View All</Button>
-                </Link>
-              </div>
-            </CardHeader>
-            <CardContent>
+        {/* Quick Actions */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Button
+                onClick={() => router.push('/student/lost-found')}
+                className="bg-blue-600 hover:bg-blue-700 gap-2 h-auto py-3"
+              >
+                <Package className="w-4 h-4" />
+                <span>Browse Lost Items</span>
+              </Button>
+              <Button
+                onClick={() => router.push('/student/report-lost')}
+                variant="outline"
+                className="border-red-300 text-red-600 hover:bg-red-50 gap-2 h-auto py-3"
+              >
+                <FileText className="w-4 h-4" />
+                <span>Report Lost Item</span>
+              </Button>
+              <Button
+                onClick={() => router.push('/student/report-found')}
+                variant="outline"
+                className="border-green-300 text-green-600 hover:bg-green-50 gap-2 h-auto py-3"
+              >
+                <FileText className="w-4 h-4" />
+                <span>Report Found Item</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Items Section */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>Recently Listed Items</CardTitle>
+            <Button
+              variant="ghost"
+              onClick={() => router.push('/student/lost-found')}
+              className="gap-2"
+            >
+              View All
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </CardHeader>
+          <CardContent>
+            {recentItems.length > 0 ? (
               <div className="space-y-4">
-                {recentLostFound.length > 0 ? (
-                  recentLostFound.map((item) => (
-                    <div key={item.id} className="flex gap-4 pb-4 border-b last:border-b-0">
-                      {item.imageUrl && (
-                        <img
-                          src={item.imageUrl}
-                          alt={item.itemName}
-                          className="w-16 h-16 object-cover rounded-lg"
-                        />
-                      )}
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between gap-2">
-                          <h3 className="font-semibold text-gray-900">{item.itemName}</h3>
-                          <Badge className={statusColors[item.status]}>
-                            {item.status === 'unclaimed' ? 'Unclaimed' : item.status}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-600 mt-1">{item.category}</p>
-                        <p className="text-xs text-gray-500 mt-1">📍 {item.location}</p>
+                {recentItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-start gap-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                    onClick={() => router.push('/student/lost-found')}
+                  >
+                    {item.imageUrl && (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.itemName}
+                        className="w-16 h-16 rounded object-cover"
+                      />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-semibold text-gray-900">{item.itemName}</h3>
+                        <Badge
+                          className={`text-xs ${
+                            item.status === 'claimed'
+                              ? 'bg-green-100 text-green-800'
+                              : item.status === 'found'
+                              ? 'bg-blue-100 text-blue-800'
+                              : item.status === 'unclaimed'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}
+                        >
+                          {item.status.toUpperCase()}
+                        </Badge>
                       </div>
+                      <p className="text-sm text-gray-600">{item.category}</p>
+                      <p className="text-xs text-gray-500 mt-1">📍 {item.location}</p>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-gray-600 text-sm">No recent items</p>
-                )}
+                  </div>
+                ))}
               </div>
-              <Link href="/student/lost-found">
-                <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">
-                  <Eye className="w-4 h-4 mr-2" />
-                  Browse All Items
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Notifications */}
-          <Card>
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle className="flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-blue-600" />
-                  Recent Notifications
-                </CardTitle>
-                <Link href="/student/notifications">
-                  <Button variant="ghost" size="sm">View All</Button>
-                </Link>
+            ) : (
+              <div className="text-center py-8">
+                <p className="text-gray-600">No items listed yet</p>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {recentNotifications.length > 0 ? (
-                  recentNotifications.map((notif) => (
-                    <div key={notif.id} className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                      <div className="flex justify-between items-start gap-2">
-                        <h4 className="font-semibold text-gray-900 text-sm">{notif.title}</h4>
-                        {!notif.read && (
-                          <div className="w-2 h-2 bg-red-600 rounded-full mt-1"></div>
-                        )}
-                      </div>
-                      <p className="text-xs text-gray-600 mt-1">{notif.message}</p>
-                      <p className="text-xs text-gray-500 mt-2">{notif.date}</p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-600 text-sm">No notifications</p>
-                )}
-              </div>
-              <Link href="/student/notifications">
-                <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">
-                  View All Notifications
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </DashboardLayout>
   );

@@ -6,15 +6,36 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { mockReservations } from '@/lib/mock-data';
+import { getMonthCalendarDays } from '@/lib/utils';
 import { CheckCircle, XCircle, Clock, Calendar, ChevronLeft, ChevronRight, Send } from 'lucide-react';
 
 export default function OSAStaffReservations() {
   const [reservations, setReservations] = useState(mockReservations);
   const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'approved' | 'cancelled'>('all');
-  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4)); // May 2026
+  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 3)); // April 2026
   const [selectedDateEvent, setSelectedDateEvent] = useState<string | null>(null);
 
-  const filteredReservations = reservations.filter((res) => {
+  const groupedReservations = Object.values(
+    reservations.reduce((acc, res) => {
+      const key = `${res.organizationName}|${res.eventTime}|${res.venue}|${res.status}`;
+      if (!acc[key]) {
+        acc[key] = { ...res, dates: [res.eventDate] };
+      } else {
+        acc[key].dates.push(res.eventDate);
+      }
+      return acc;
+    }, {} as Record<string, any>)
+  );
+
+  const formatDateRange = (dates: string[]) => {
+    const sorted = [...dates].sort();
+    if (sorted.length === 1) {
+      return new Date(sorted[0]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+    return `${new Date(sorted[0]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(sorted[sorted.length - 1]).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+  };
+
+  const filteredReservations = groupedReservations.filter((res) => {
     if (activeTab === 'all') return true;
     return res.status === activeTab;
   });
@@ -40,15 +61,10 @@ export default function OSAStaffReservations() {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
   };
 
-  // Calendar setup
-  const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
-  const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
-  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-  const emptyDays = Array.from({ length: firstDayOfMonth }, (_, i) => i);
+  const calendarDays = getMonthCalendarDays(currentMonth);
 
-  // Get reservations by date
-  const getReservationsByDate = (day: number) => {
-    const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  const getReservationsByDate = (date: Date) => {
+    const dateStr = date.toISOString().split('T')[0];
     return reservations.filter((r) => r.eventDate === dateStr);
   };
 
@@ -64,11 +80,12 @@ export default function OSAStaffReservations() {
   return (
     <DashboardLayout>
       <div className="p-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Reservation Management</h1>
+        <div className="mx-auto max-w-6xl">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Reservation Management</h1>
         <p className="text-gray-600 mb-8">Review and manage all organization reservation requests</p>
 
         {/* Calendar View */}
-        <Card className="mb-8">
+        <Card className="mb-8 max-w-4xl mx-auto">
           <CardHeader>
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-900">{monthName}</h2>
@@ -92,36 +109,35 @@ export default function OSAStaffReservations() {
               ))}
             </div>
 
-            {/* Empty days */}
-            {emptyDays.map((_, i) => (
-              <div key={`empty-${i}`} />
-            ))}
+            <div className="grid grid-cols-7 gap-2">
+              {calendarDays.map((cell) => {
+                const dayReservations = cell.currentMonth ? getReservationsByDate(cell.date) : [];
+                const hasApproved = dayReservations.some((r) => r.status === 'approved');
+                const hasPending = dayReservations.some((r) => r.status === 'pending');
 
-            {/* Calendar days */}
-            {days.map((day) => {
-              const dayReservations = getReservationsByDate(day);
-              const hasApproved = dayReservations.some((r) => r.status === 'approved');
-              const hasPending = dayReservations.some((r) => r.status === 'pending');
-
-              return (
-                <button
-                  key={day}
-                  onClick={() => dayReservations.length > 0 && setSelectedDateEvent(`${day}`)}
-                  className={`aspect-square p-2 rounded-lg border-2 transition-colors text-sm font-semibold ${
-                    hasApproved
-                      ? 'bg-green-50 border-green-300 text-green-900'
-                      : hasPending
-                      ? 'bg-yellow-50 border-yellow-300 text-yellow-900 cursor-pointer hover:bg-yellow-100'
-                      : 'bg-gray-50 border-gray-200 text-gray-500'
-                  }`}
-                >
-                  <div>{day}</div>
-                  {dayReservations.length > 0 && (
-                    <div className="text-xs mt-1">{dayReservations.length} event{dayReservations.length > 1 ? 's' : ''}</div>
-                  )}
-                </button>
-              );
-            })}
+                return (
+                  <button
+                    key={cell.date.toISOString()}
+                    onClick={() => cell.currentMonth && dayReservations.length > 0 && setSelectedDateEvent(cell.date.toISOString().split('T')[0])}
+                    className={`aspect-square p-2 rounded-lg border-2 transition-colors text-sm font-semibold ${
+                      cell.currentMonth
+                        ? hasApproved
+                          ? 'bg-green-50 border-green-300 text-green-900'
+                          : hasPending
+                          ? 'bg-yellow-50 border-yellow-300 text-yellow-900 cursor-pointer hover:bg-yellow-100'
+                          : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'
+                        : 'bg-white border-transparent text-gray-300 cursor-default'
+                    }`}
+                    disabled={!cell.currentMonth}
+                  >
+                    <div>{cell.label}</div>
+                    {dayReservations.length > 0 && (
+                      <div className="text-xs mt-1">{dayReservations.length} event{dayReservations.length > 1 ? 's' : ''}</div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </CardContent>
         </Card>
 
@@ -203,7 +219,7 @@ export default function OSAStaffReservations() {
                       <div className="flex-1">
                         <h3 className="font-semibold text-lg text-gray-900">{res.organizationName}</h3>
                         <p className="text-sm text-gray-600 mt-1">
-                          📍 {res.venue} • 📅 {res.eventDate} at {res.eventTime}
+                          📍 {res.venue} • 📅 {formatDateRange(res.dates)} at {res.eventTime}
                         </p>
                         <p className="text-sm text-gray-600 mt-1">
                           👥 Expected attendees: {res.attendees}
@@ -252,6 +268,7 @@ export default function OSAStaffReservations() {
             )}
           </CardContent>
         </Card>
+        </div>
       </div>
     </DashboardLayout>
   );

@@ -84,12 +84,6 @@ export const roleNavigation: Record<UserRole, NavItem[]> = {
   ],
   student: [
     {
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-      path: '/student/dashboard',
-    },
-    {
       id: 'browse-items',
       label: 'Browse Items',
       icon: Package,
@@ -102,10 +96,16 @@ export const roleNavigation: Record<UserRole, NavItem[]> = {
       path: '/student/my-reports',
     },
     {
-      id: 'notifications',
-      label: 'Notifications',
-      icon: Bell,
-      path: '/student/notifications',
+      id: 'report-lost',
+      label: 'Report Lost Item',
+      icon: Calendar,
+      path: '/student/report-lost',
+    },
+    {
+      id: 'report-found',
+      label: 'Report Found Item',
+      icon: Package,
+      path: '/student/report-found',
     },
     {
       id: 'profile',

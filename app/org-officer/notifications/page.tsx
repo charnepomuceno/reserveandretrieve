@@ -1,14 +1,21 @@
 'use client';
 
+import { useState } from 'react';
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { mockNotifications } from '@/lib/mock-data';
-import { Bell, CheckCircle, AlertCircle } from 'lucide-react';
+import { mockOrgNotifications } from '@/lib/mock-data';
+import { Bell, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
 
 export default function NotificationsPage() {
-  const unreadCount = mockNotifications.filter((n) => !n.read).length;
+  const [filter, setFilter] = useState<'all' | 'reservation' | 'system'>('all');
+  const filteredNotifications = mockOrgNotifications.filter((notif) => {
+    if (filter === 'all') return true;
+    return filter === 'reservation' ? notif.type === 'reservation' : notif.type === 'system';
+  });
+
+  const unreadCount = filteredNotifications.filter((n) => !n.read).length;
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
@@ -38,24 +45,33 @@ export default function NotificationsPage() {
 
         {/* Filter Buttons */}
         <div className="flex gap-2 mb-8">
-          <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
+          <Button
+            variant={filter === 'all' ? 'default' : 'outline'}
+            className={filter === 'all' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+            onClick={() => setFilter('all')}
+          >
             All
           </Button>
-          <Button variant="outline">
+          <Button
+            variant={filter === 'reservation' ? 'default' : 'outline'}
+            className={filter === 'reservation' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+            onClick={() => setFilter('reservation')}
+          >
             Reservations
           </Button>
-          <Button variant="outline">
-            Claims
-          </Button>
-          <Button variant="outline">
+          <Button
+            variant={filter === 'system' ? 'default' : 'outline'}
+            className={filter === 'system' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+            onClick={() => setFilter('system')}
+          >
             System
           </Button>
         </div>
 
         {/* Notifications List */}
         <div className="space-y-4">
-          {mockNotifications.length > 0 ? (
-            mockNotifications.map((notif) => (
+          {filteredNotifications.length > 0 ? (
+            filteredNotifications.map((notif) => (
               <Card
                 key={notif.id}
                 className={`transition ${
@@ -131,5 +147,3 @@ export default function NotificationsPage() {
     </DashboardLayout>
   );
 }
-
-import { Calendar } from 'lucide-react';

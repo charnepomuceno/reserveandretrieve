@@ -128,7 +128,7 @@ export default function OSAStaffLostFound() {
 
           <CardContent className="pt-6">
             {filteredItems.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredItems.map((item) => (
                   <div key={item.id} className="border rounded-lg overflow-hidden hover:shadow-md transition-shadow">
                     {/* Image */}
@@ -136,7 +136,7 @@ export default function OSAStaffLostFound() {
                       <img
                         src={item.imageUrl}
                         alt={item.itemName}
-                        className="w-full h-48 object-cover"
+                        className="w-full h-36 object-cover"
                       />
                     )}
 

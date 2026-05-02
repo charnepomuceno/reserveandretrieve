@@ -3,10 +3,11 @@
 import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { mockLostFoundItems } from '@/lib/mock-data';
+import { mockLostFoundItems, mockStudentNotifications } from '@/lib/mock-data';
 
 export default function MyReports() {
   const userReports = mockLostFoundItems; // In a real app, filter by user
+  const userNotifications = mockStudentNotifications;
   
   const stats = {
     total: userReports.length,
@@ -24,8 +25,8 @@ export default function MyReports() {
   return (
     <DashboardLayout>
       <div className="p-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">My Lost Item Reports</h1>
-        <p className="text-gray-600 mb-8">Track your lost item reports and search progress</p>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">My Reports & Notifications</h1>
+        <p className="text-gray-600 mb-8">Track your lost item reports and recent updates from the losses and claims system.</p>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -91,6 +92,21 @@ export default function MyReports() {
                 </tbody>
               </table>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Notifications */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Recent Notifications</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {userNotifications.length > 0 ? (
+              <div className="space-y-4">
+              </div>
+            ) : (
+              <p className="text-gray-600 text-center py-8">No notifications</p>
+            )}
           </CardContent>
         </Card>
       </div>

@@ -5,11 +5,11 @@ import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { mockNotifications } from '@/lib/mock-data';
+import { mockOsaStaffNotifications } from '@/lib/mock-data';
 import { CheckCircle, Trash2, Calendar, Package, AlertCircle, Bell } from 'lucide-react';
 
 export default function OSAStaffNotifications() {
-  const [notifications, setNotifications] = useState(mockNotifications);
+  const [notifications, setNotifications] = useState(mockOsaStaffNotifications);
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
 
   const filteredNotifications = notifications.filter((notif) => {

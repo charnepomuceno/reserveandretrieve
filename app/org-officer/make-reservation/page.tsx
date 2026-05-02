@@ -7,10 +7,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { mockReservations } from '@/lib/mock-data';
+import { getMonthCalendarDays } from '@/lib/utils';
 import { ChevronLeft, ChevronRight, Calendar, Clock, Users } from 'lucide-react';
 
 export default function MakeReservationPage() {
-  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4)); // May 2026
+  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 3)); // April 2026
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
@@ -24,17 +25,14 @@ export default function MakeReservationPage() {
   // Get approved event dates
   const approvedDates = mockReservations
     .filter((r) => r.status === 'approved')
-    .map((r) => new Date(r.eventDate).getDate());
+    .map((r) => r.eventDate);
 
   // Get pending event dates
   const pendingDates = mockReservations
     .filter((r) => r.status === 'pending')
-    .map((r) => new Date(r.eventDate).getDate());
+    .map((r) => r.eventDate);
 
-  const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
-  const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1).getDay();
-  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-  const emptyDays = Array.from({ length: firstDayOfMonth }, (_, i) => i);
+  const calendarDays = getMonthCalendarDays(currentMonth);
 
   const handlePrevMonth = () => {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
@@ -44,15 +42,15 @@ export default function MakeReservationPage() {
     setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
   };
 
-  const handleDateClick = (day: number) => {
-    const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    
+  const handleDateClick = (date: Date) => {
+    const dateStr = date.toISOString().split('T')[0];
+
     if (selectedDates.length === 0) {
       setSelectedDates([dateStr]);
     } else if (selectedDates.length === 1) {
       const start = new Date(selectedDates[0]);
       const end = new Date(dateStr);
-      
+
       if (end < start) {
         setSelectedDates([dateStr, selectedDates[0]]);
       } else {
@@ -64,17 +62,17 @@ export default function MakeReservationPage() {
     }
   };
 
-  const isDateInRange = (day: number): boolean => {
+  const isDateInRange = (date: Date): boolean => {
     if (selectedDates.length < 2) return false;
-    const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const dateStr = date.toISOString().split('T')[0];
     const start = new Date(selectedDates[0]);
     const current = new Date(dateStr);
     const end = new Date(selectedDates[1]);
     return current >= start && current <= end;
   };
 
-  const isDateSelected = (day: number): boolean => {
-    const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  const isDateSelected = (date: Date): boolean => {
+    const dateStr = date.toISOString().split('T')[0];
     return selectedDates.includes(dateStr);
   };
 
@@ -122,6 +120,17 @@ export default function MakeReservationPage() {
                 </div>
               </CardHeader>
               <CardContent>
+                <div className="mb-4 space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-6 h-6 bg-green-100 rounded border border-green-300" />
+                    <span className="text-sm text-gray-700">Approved event</span>
+                    <div className="w-6 h-6 bg-yellow-100 rounded border border-yellow-300" />
+                    <span className="text-sm text-gray-700">Pending approval</span>
+                    <div className="w-6 h-6 bg-blue-100 rounded border border-blue-300" />
+                    <span className="text-sm text-gray-700">Selected</span>
+                  </div>
+                </div>
+
                 {/* Day headers */}
                 <div className="grid grid-cols-7 gap-2 mb-4">
                   {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
@@ -131,58 +140,42 @@ export default function MakeReservationPage() {
                   ))}
                 </div>
 
-                {/* Empty days */}
-                {emptyDays.map((_, i) => (
-                  <div key={`empty-${i}`} className="aspect-square" />
-                ))}
+                <div className="grid grid-cols-7 gap-2">
+                  {calendarDays.map((cell) => {
+                    const dateStr = cell.date.toISOString().split('T')[0];
+                    const isApproved = approvedDates.includes(dateStr);
+                    const isPending = pendingDates.includes(dateStr);
+                    const isSelected = isDateSelected(cell.date);
+                    const inRange = isDateInRange(cell.date);
 
-                {/* Calendar days */}
-                {days.map((day) => {
-                  const isApproved = approvedDates.includes(day);
-                  const isPending = pendingDates.includes(day);
-                  const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                  const isSelected = isDateSelected(day);
-                  const inRange = isDateInRange(day);
-
-                  return (
-                    <button
-                      key={day}
-                      onClick={() => !isApproved && !isPending && handleDateClick(day)}
-                      disabled={isApproved || isPending}
-                      className={`aspect-square rounded-lg font-semibold transition-colors ${
-                        isApproved
-                          ? 'bg-green-100 text-green-900 cursor-not-allowed'
-                          : isPending
-                          ? 'bg-yellow-100 text-yellow-900 cursor-not-allowed'
-                          : isSelected
-                          ? 'bg-blue-600 text-white'
-                          : inRange
-                          ? 'bg-blue-200 text-blue-900'
-                          : 'bg-gray-100 text-gray-900 hover:bg-blue-50'
-                      }`}
-                    >
-                      {day}
-                    </button>
-                  );
-                })}
+                    return (
+                      <button
+                        key={cell.date.toISOString()}
+                        onClick={() =>
+                          cell.currentMonth && !isApproved && !isPending && handleDateClick(cell.date)
+                        }
+                        disabled={!cell.currentMonth || isApproved || isPending}
+                        className={`aspect-square rounded-lg font-semibold transition-colors ${
+                          cell.currentMonth
+                            ? isApproved
+                              ? 'bg-green-100 text-green-900 cursor-not-allowed'
+                              : isPending
+                              ? 'bg-yellow-100 text-yellow-900 cursor-not-allowed'
+                              : isSelected
+                              ? 'bg-blue-600 text-white'
+                              : inRange
+                              ? 'bg-blue-200 text-blue-900'
+                              : 'bg-gray-100 text-gray-900 hover:bg-blue-50'
+                            : 'bg-white border border-gray-200 text-gray-400 cursor-default'
+                        }`}
+                      >
+                        {cell.label}
+                      </button>
+                    );
+                  })}
+                </div>
               </CardContent>
             </Card>
-
-            {/* Legend */}
-            <div className="mt-6 space-y-2">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-green-100 rounded border border-green-300" />
-                <span className="text-sm text-gray-700">Approved event</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-yellow-100 rounded border border-yellow-300" />
-                <span className="text-sm text-gray-700">Pending approval</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-blue-100 rounded border border-blue-300" />
-                <span className="text-sm text-gray-700">Selected</span>
-              </div>
-            </div>
           </div>
 
           {/* Reservation Form */}
