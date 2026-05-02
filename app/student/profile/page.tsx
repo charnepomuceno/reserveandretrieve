@@ -25,14 +25,14 @@ export default function StudentProfile() {
             <Card>
               <CardContent className="pt-6 text-center">
                 <div className="flex justify-center mb-4">
-                  <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center">
-                    <User className="w-12 h-12 text-red-600" />
+                  <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center">
+                    <User className="w-12 h-12 text-blue-600" />
                   </div>
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-1">{user.name}</h2>
-                <Badge className="bg-red-100 text-red-800 mb-4">Student</Badge>
+                <Badge className="bg-blue-100 text-blue-800 mb-4">Student</Badge>
                 <p className="text-sm text-gray-600 mb-6">{user.email}</p>
-                <Button className="w-full bg-red-600 hover:bg-red-700 mb-2">Edit Profile</Button>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 mb-2">Edit Profile</Button>
                 <Button variant="outline" className="w-full">Change Password</Button>
               </CardContent>
             </Card>
@@ -102,7 +102,7 @@ export default function StudentProfile() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-red-600" />
+                  <Bell className="w-5 h-5 text-blue-600" />
                   Notification Preferences
                 </CardTitle>
                 <CardDescription>Control how you receive updates</CardDescription>
@@ -129,7 +129,7 @@ export default function StudentProfile() {
                   </div>
                   <input type="checkbox" defaultChecked className="w-5 h-5" />
                 </div>
-                <Button className="w-full bg-red-600 hover:bg-red-700 mt-4">Update Preferences</Button>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 mt-4">Update Preferences</Button>
               </CardContent>
             </Card>
 
@@ -137,7 +137,7 @@ export default function StudentProfile() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-red-600" />
+                  <Shield className="w-5 h-5 text-blue-600" />
                   Security Settings
                 </CardTitle>
                 <CardDescription>Manage your account security</CardDescription>

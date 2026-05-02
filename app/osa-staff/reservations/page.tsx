@@ -11,7 +11,7 @@ import { CheckCircle, XCircle, Clock, Calendar, ChevronLeft, ChevronRight, Send 
 export default function OSAStaffReservations() {
   const [reservations, setReservations] = useState(mockReservations);
   const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'approved' | 'cancelled'>('all');
-  const [currentMonth, setCurrentMonth] = useState(new Date(2024, 4)); // May 2024
+  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4)); // May 2026
   const [selectedDateEvent, setSelectedDateEvent] = useState<string | null>(null);
 
   const filteredReservations = reservations.filter((res) => {

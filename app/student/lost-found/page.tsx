@@ -7,23 +7,24 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { mockLostFoundItems } from '@/lib/mock-data';
-import { Search, Plus, Package, AlertCircle } from 'lucide-react';
+import { Search, X, Mail } from 'lucide-react';
 
 export default function StudentLostFound() {
-  const [items, setItems] = useState(mockLostFoundItems);
+  const [items] = useState(mockLostFoundItems);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterCategory, setFilterCategory] = useState<string | 'all'>('all');
-  const [filterStatus, setFilterStatus] = useState<string | 'all'>('all');
+  const [filterCategory, setFilterCategory] = useState<string>('All Categories');
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [showPingModal, setShowPingModal] = useState(false);
+  const [pingEmail, setPingEmail] = useState('');
 
   const filteredItems = items.filter((item) => {
     const matchesSearch = item.itemName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = filterCategory === 'all' || item.category === filterCategory;
-    const matchesStatus = filterStatus === 'all' || item.status === filterStatus;
-    return matchesSearch && matchesCategory && matchesStatus;
+    const matchesCategory = filterCategory === 'All Categories' || item.category === filterCategory;
+    return matchesSearch && matchesCategory;
   });
 
-  const categories = Array.from(new Set(items.map((i) => i.category)));
+  const categories = ['All Categories', ...Array.from(new Set(items.map((i) => i.category)))];
 
   const statusColors = {
     lost: 'bg-red-100 text-red-800',
@@ -32,116 +33,89 @@ export default function StudentLostFound() {
     unclaimed: 'bg-yellow-100 text-yellow-800',
   };
 
+  const handlePingOwner = () => {
+    if (pingEmail) {
+      alert(`Ping sent to ${pingEmail} about "${selectedItem.itemName}"`);
+      setPingEmail('');
+      setShowPingModal(false);
+    }
+  };
+
   return (
     <DashboardLayout>
       <div className="p-8">
-        <div className="flex justify-between items-start mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Lost & Found</h1>
-            <p className="text-gray-600">Browse items and file reports</p>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Browse Lost Items</h1>
+        <p className="text-gray-600 mb-8">Search for items that match your lost items</p>
+
+        {/* Search */}
+        <div className="mb-6">
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+            <Input
+              placeholder="Search by item name, category..."
+              className="pl-10 border-gray-300"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
-          <Button className="bg-red-600 hover:bg-red-700 gap-2">
-            <Plus className="w-4 h-4" />
-            Report Lost Item
-          </Button>
+
+          {/* Category Buttons */}
+          <div className="flex gap-2 flex-wrap">
+            {categories.map((cat) => (
+              <Button
+                key={cat}
+                variant={filterCategory === cat ? 'default' : 'outline'}
+                onClick={() => setFilterCategory(cat)}
+                className={filterCategory === cat ? 'bg-blue-600 hover:bg-blue-700 text-white' : ''}
+              >
+                {cat}
+              </Button>
+            ))}
+          </div>
         </div>
-
-        {/* Search & Filters */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Search & Filter</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
-              <Input
-                placeholder="Search by item name or description..."
-                className="pl-10"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                <select
-                  value={filterCategory}
-                  onChange={(e) => setFilterCategory(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                >
-                  <option value="all">All Categories</option>
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                <select
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                >
-                  <option value="all">All Items</option>
-                  <option value="lost">Lost</option>
-                  <option value="found">Found</option>
-                  <option value="unclaimed">Unclaimed</option>
-                  <option value="claimed">Claimed</option>
-                </select>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Items Grid */}
         {filteredItems.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {filteredItems.map((item) => (
               <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 {item.imageUrl && (
-                  <img
-                    src={item.imageUrl}
-                    alt={item.itemName}
-                    className="w-full h-48 object-cover"
-                  />
+                  <div className="relative">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.itemName}
+                      className="w-full h-40 object-cover"
+                    />
+                    <Badge className={`absolute top-2 right-2 ${statusColors[item.status]}`}>
+                      {item.status.toUpperCase()}
+                    </Badge>
+                  </div>
                 )}
 
                 <CardContent className="pt-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-semibold text-lg text-gray-900">{item.itemName}</h3>
-                    <Badge className={statusColors[item.status]}>
-                      {item.status === 'unclaimed' ? 'Unclaimed' : item.status}
-                    </Badge>
-                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-4">{item.itemName}</h3>
 
-                  <div className="space-y-2 mb-4 text-sm">
-                    <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">Category</p>
-                      <p className="text-gray-700">{item.category}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">Description</p>
-                      <p className="text-gray-700">{item.description}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">Location</p>
-                      <p className="text-gray-700">📍 {item.location}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">Reported</p>
-                      <p className="text-gray-700">{item.dateReported}</p>
-                    </div>
-                  </div>
-
-                  {item.status === 'unclaimed' && (
-                    <Button className="w-full bg-red-600 hover:bg-red-700 text-sm">
-                      Claim This Item
+                  <div className="space-y-3 mb-4">
+                    <Button
+                      onClick={() => {
+                        setSelectedItem(item);
+                        setShowPingModal(true);
+                      }}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-sm"
+                    >
+                      Claim Item
                     </Button>
-                  )}
+                    <Button
+                      onClick={() => {
+                        setSelectedItem(item);
+                        setShowPingModal(true);
+                      }}
+                      variant="outline"
+                      className="w-full text-blue-600 border-blue-300 hover:bg-blue-50 text-sm"
+                    >
+                      Ping Possible Owner
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -149,19 +123,54 @@ export default function StudentLostFound() {
         ) : (
           <Card>
             <CardContent className="pt-12 pb-12 text-center">
-              <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-600 mb-4">No items found matching your criteria</p>
-              <Button variant="outline" onClick={() => {
-                setSearchQuery('');
-                setFilterCategory('all');
-                setFilterStatus('all');
-              }}>
-                Clear Filters
-              </Button>
+              <p className="text-gray-600">No items found</p>
             </CardContent>
           </Card>
         )}
       </div>
+
+      {/* Ping Modal */}
+      {showPingModal && selectedItem && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <Card className="w-full max-w-md">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
+              <CardTitle>Ping Possible Owner</CardTitle>
+              <button onClick={() => {
+                setShowPingModal(false);
+                setPingEmail('');
+              }}>
+                <X className="w-5 h-5" />
+              </button>
+            </CardHeader>
+            <CardContent className="pt-6 space-y-4">
+              <p className="text-sm text-gray-600">
+                Send a notification email to a student&apos;s gbox account letting them know this item might be theirs
+              </p>
+
+              <Input
+                placeholder="e.g ecbathan@gbox.adnu.edu.ph"
+                value={pingEmail}
+                onChange={(e) => setPingEmail(e.target.value)}
+                className="border-gray-300"
+              />
+
+              <Button
+                onClick={handlePingOwner}
+                className="w-full bg-blue-600 hover:bg-blue-700 gap-2"
+              >
+                <Mail className="w-4 h-4" />
+                Send Ping
+              </Button>
+
+              <div className="border-t pt-4">
+                <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">PREVIOUSLY PINGED</p>
+                <p className="text-sm text-gray-700">rabad@gbox.adnu.edu.ph</p>
+                <p className="text-xs text-gray-500">Apr 27, 3:00 PM</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </DashboardLayout>
   );
 }
