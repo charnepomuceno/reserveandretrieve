@@ -90,10 +90,16 @@ export const roleNavigation: Record<UserRole, NavItem[]> = {
       path: '/student/dashboard',
     },
     {
-      id: 'lost-found',
-      label: 'Lost & Found',
+      id: 'browse-items',
+      label: 'Browse Items',
       icon: Package,
       path: '/student/lost-found',
+    },
+    {
+      id: 'my-reports',
+      label: 'My Reports',
+      icon: BarChart3,
+      path: '/student/my-reports',
     },
     {
       id: 'notifications',
@@ -160,9 +166,9 @@ export const roleColors: Record<UserRole, { bg: string; text: string; accent: st
     accent: 'bg-green-600',
   },
   student: {
-    bg: 'bg-red-50',
-    text: 'text-red-900',
-    accent: 'bg-red-600',
+    bg: 'bg-blue-50',
+    text: 'text-blue-900',
+    accent: 'bg-blue-600',
   },
   admin: {
     bg: 'bg-purple-50',

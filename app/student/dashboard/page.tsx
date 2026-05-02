@@ -34,7 +34,7 @@ export default function StudentDashboard() {
                   <p className="text-sm text-gray-600 mb-1">Active Reports</p>
                   <p className="text-3xl font-bold text-gray-900">{mockLostFoundItems.length}</p>
                 </div>
-                <Package className="w-10 h-10 text-red-500" />
+                <Package className="w-10 h-10 text-blue-500" />
               </div>
             </CardContent>
           </Card>
@@ -48,7 +48,7 @@ export default function StudentDashboard() {
                     {mockNotifications.filter((n) => !n.read).length}
                   </p>
                 </div>
-                <Bell className="w-10 h-10 text-red-500" />
+                <Bell className="w-10 h-10 text-blue-500" />
               </div>
             </CardContent>
           </Card>
@@ -62,7 +62,7 @@ export default function StudentDashboard() {
                     {mockLostFoundItems.filter((i) => i.status === 'claimed').length}
                   </p>
                 </div>
-                <AlertCircle className="w-10 h-10 text-green-500" />
+                <AlertCircle className="w-10 h-10 text-blue-500" />
               </div>
             </CardContent>
           </Card>
@@ -74,7 +74,7 @@ export default function StudentDashboard() {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
-                  <Package className="w-5 h-5 text-red-600" />
+                  <Package className="w-5 h-5 text-blue-600" />
                   Recent Lost & Found Items
                 </CardTitle>
                 <Link href="/student/lost-found">
@@ -111,7 +111,7 @@ export default function StudentDashboard() {
                 )}
               </div>
               <Link href="/student/lost-found">
-                <Button className="w-full mt-4 bg-red-600 hover:bg-red-700">
+                <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">
                   <Eye className="w-4 h-4 mr-2" />
                   Browse All Items
                 </Button>
@@ -124,7 +124,7 @@ export default function StudentDashboard() {
             <CardHeader>
               <div className="flex justify-between items-center">
                 <CardTitle className="flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-red-600" />
+                  <Bell className="w-5 h-5 text-blue-600" />
                   Recent Notifications
                 </CardTitle>
                 <Link href="/student/notifications">
@@ -136,7 +136,7 @@ export default function StudentDashboard() {
               <div className="space-y-3">
                 {recentNotifications.length > 0 ? (
                   recentNotifications.map((notif) => (
-                    <div key={notif.id} className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div key={notif.id} className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
                       <div className="flex justify-between items-start gap-2">
                         <h4 className="font-semibold text-gray-900 text-sm">{notif.title}</h4>
                         {!notif.read && (
@@ -152,7 +152,7 @@ export default function StudentDashboard() {
                 )}
               </div>
               <Link href="/student/notifications">
-                <Button className="w-full mt-4 bg-red-600 hover:bg-red-700">
+                <Button className="w-full mt-4 bg-blue-600 hover:bg-blue-700">
                   View All Notifications
                 </Button>
               </Link>

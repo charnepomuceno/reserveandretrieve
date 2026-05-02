@@ -10,11 +10,12 @@ import { mockReservations } from '@/lib/mock-data';
 import { ChevronLeft, ChevronRight, Calendar, Clock, Users } from 'lucide-react';
 
 export default function MakeReservationPage() {
-  const [currentMonth, setCurrentMonth] = useState(new Date(2024, 4)); // May 2024
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4)); // May 2026
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    eventTime: '09:00',
+    startTime: '09:00',
+    endTime: '17:00',
     attendees: '',
     eventDescription: '',
     specialRequirements: '',
@@ -45,8 +46,36 @@ export default function MakeReservationPage() {
 
   const handleDateClick = (day: number) => {
     const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    setSelectedDate(dateStr);
-    setShowForm(true);
+    
+    if (selectedDates.length === 0) {
+      setSelectedDates([dateStr]);
+    } else if (selectedDates.length === 1) {
+      const start = new Date(selectedDates[0]);
+      const end = new Date(dateStr);
+      
+      if (end < start) {
+        setSelectedDates([dateStr, selectedDates[0]]);
+      } else {
+        setSelectedDates([selectedDates[0], dateStr]);
+      }
+      setShowForm(true);
+    } else {
+      setSelectedDates([dateStr]);
+    }
+  };
+
+  const isDateInRange = (day: number): boolean => {
+    if (selectedDates.length < 2) return false;
+    const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const start = new Date(selectedDates[0]);
+    const current = new Date(dateStr);
+    const end = new Date(selectedDates[1]);
+    return current >= start && current <= end;
+  };
+
+  const isDateSelected = (day: number): boolean => {
+    const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    return selectedDates.includes(dateStr);
   };
 
   const handleSubmit = () => {
@@ -54,11 +83,13 @@ export default function MakeReservationPage() {
       alert('Please enter number of attendees');
       return;
     }
-    alert(`Reservation submitted for ${selectedDate} at ${formData.eventTime}`);
+    const dateRange = selectedDates.length === 1 ? selectedDates[0] : `${selectedDates[0]} to ${selectedDates[1]}`;
+    alert(`Reservation submitted for ${dateRange} from ${formData.startTime} to ${formData.endTime}`);
     setShowForm(false);
-    setSelectedDate(null);
+    setSelectedDates([]);
     setFormData({
-      eventTime: '09:00',
+      startTime: '09:00',
+      endTime: '17:00',
       attendees: '',
       eventDescription: '',
       specialRequirements: '',
@@ -110,7 +141,8 @@ export default function MakeReservationPage() {
                   const isApproved = approvedDates.includes(day);
                   const isPending = pendingDates.includes(day);
                   const dateStr = `${currentMonth.getFullYear()}-${String(currentMonth.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                  const isSelected = selectedDate === dateStr;
+                  const isSelected = isDateSelected(day);
+                  const inRange = isDateInRange(day);
 
                   return (
                     <button
@@ -124,6 +156,8 @@ export default function MakeReservationPage() {
                           ? 'bg-yellow-100 text-yellow-900 cursor-not-allowed'
                           : isSelected
                           ? 'bg-blue-600 text-white'
+                          : inRange
+                          ? 'bg-blue-200 text-blue-900'
                           : 'bg-gray-100 text-gray-900 hover:bg-blue-50'
                       }`}
                     >
@@ -153,7 +187,7 @@ export default function MakeReservationPage() {
 
           {/* Reservation Form */}
           <div>
-            {selectedDate && showForm ? (
+            {selectedDates.length > 0 && showForm ? (
               <Card>
                 <CardHeader>
                   <CardTitle>Event Details</CardTitle>
@@ -161,26 +195,42 @@ export default function MakeReservationPage() {
                 <CardContent className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Date
+                      Date Range
                     </label>
                     <Input
                       type="text"
-                      value={selectedDate}
+                      value={selectedDates.length === 1 ? selectedDates[0] : `${selectedDates[0]} to ${selectedDates[1]}`}
                       disabled
                       className="border-gray-300 bg-gray-50"
                     />
+                    {selectedDates.length === 1 && (
+                      <p className="text-xs text-gray-500 mt-1">Click another date to select a range, or submit for single day</p>
+                    )}
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Time
-                    </label>
-                    <Input
-                      type="time"
-                      value={formData.eventTime}
-                      onChange={(e) => setFormData({ ...formData, eventTime: e.target.value })}
-                      className="border-gray-300"
-                    />
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Start Time
+                      </label>
+                      <Input
+                        type="time"
+                        value={formData.startTime}
+                        onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+                        className="border-gray-300"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        End Time
+                      </label>
+                      <Input
+                        type="time"
+                        value={formData.endTime}
+                        onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+                        className="border-gray-300"
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -233,7 +283,7 @@ export default function MakeReservationPage() {
                     <Button
                       onClick={() => {
                         setShowForm(false);
-                        setSelectedDate(null);
+                        setSelectedDates([]);
                       }}
                       variant="outline"
                       className="flex-1"

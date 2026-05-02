@@ -54,7 +54,7 @@ export default function StudentNotifications() {
             <p className="text-gray-600">Claim status, match alerts, and appointment reminders</p>
           </div>
           {stats.unread > 0 && (
-            <Badge className="bg-red-100 text-red-800 text-lg px-3 py-1">
+            <Badge className="bg-blue-100 text-blue-800 text-lg px-3 py-1">
               {stats.unread} Unread
             </Badge>
           )}
@@ -88,7 +88,7 @@ export default function StudentNotifications() {
                   <div
                     key={notif.id}
                     className={`border rounded-lg p-4 ${typeColors[notif.type]} ${
-                      !notif.read ? 'border-l-4' : 'border-l'
+                      !notif.read ? 'border-l-4 border-l-blue-600' : 'border-l'
                     } transition-all`}
                   >
                     <div className="flex items-start gap-4">
@@ -109,7 +109,7 @@ export default function StudentNotifications() {
                             <Button
                               onClick={() => handleMarkAsRead(notif.id)}
                               size="sm"
-                              className="bg-red-600 hover:bg-red-700 gap-1"
+                              className="bg-blue-600 hover:bg-blue-700 gap-1"
                             >
                               <CheckCircle className="w-4 h-4" />
                               Mark as Read
@@ -119,7 +119,7 @@ export default function StudentNotifications() {
                             onClick={() => handleDelete(notif.id)}
                             size="sm"
                             variant="outline"
-                            className="text-red-600 border-red-200 hover:bg-red-50"
+                            className="text-blue-600 border-blue-200 hover:bg-blue-50"
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
