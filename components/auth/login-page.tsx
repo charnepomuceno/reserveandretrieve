@@ -42,19 +42,6 @@ export function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo Section */}
-        <div className="text-center mb-8">
-          <div className="mb-4">
-            <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ADNU%20RSRV%20LOGO-0I6tjNPHdPLbP5OBIMBwE2ZR97ya88.png"
-              alt="OSA Reserve & Retrieve"
-              className="h-24 mx-auto"
-            />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900">OSA</h1>
-          <p className="text-gray-600 text-sm mt-1">Reserve & Retrieve</p>
-        </div>
-
         {/* Login Card */}
         <Card className="border-0 shadow-lg">
           <CardHeader className="space-y-2">
