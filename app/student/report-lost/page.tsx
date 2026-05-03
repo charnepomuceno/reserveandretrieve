@@ -21,8 +21,8 @@ export default function ReportLostItemPage() {
       alert('Please fill in all required fields.');
       return;
     }
-    alert('Lost item report submitted. Check My Reports for updates.');
-    router.push('/student/my-reports');
+    alert('Lost item report submitted. Check Lost Item Reports for updates.');
+    router.push('/student/lost-item-reports');
   };
 
   return (

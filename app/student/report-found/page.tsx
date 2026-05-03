@@ -22,7 +22,7 @@ export default function ReportFoundItemPage() {
       return;
     }
     alert('Found item report submitted. Staff will review and list it in the lost and found catalog.');
-    router.push('/student/my-reports');
+    router.push('/student/found-item-reports');
   };
 
   return (
