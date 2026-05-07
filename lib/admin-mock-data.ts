@@ -267,6 +267,129 @@ export const adminLostCategoriesDonut = [
   { name: 'Documents', value: 12, fill: '#9333ea' },
 ];
 
+export type AdminUserDetail = {
+  id: string;
+  name: string;
+  email: string;
+  initials: string;
+  role: 'Admin' | 'OSA Staff' | 'Organization / Officer' | 'Student';
+  status: 'Active' | 'Suspended';
+  accountRestriction?: {
+    status: 'Suspended';
+    suspendedBy: string;
+    date: string;
+    reason: string;
+  };
+  basicInfo: {
+    fullName: string;
+    email: string;
+    role: string;
+    status: string;
+    lastActive: string;
+    createdDate: string;
+    department: string;
+  };
+  activitySummary: {
+    reservationsSubmitted: number;
+    claimsMade: number;
+    lostFoundPosts: number;
+    device: string;
+  };
+  quickActions: Array<{ label: string; type: 'edit' | 'role' | 'password' | 'unsuspend' }>;
+  recentActivity: Array<{ id: string; text: string; date: string }>;
+};
+
+export const adminUserDetailData: AdminUserDetail = {
+  id: 'u6',
+  name: 'Carlos Tan',
+  email: 'ctan@gbox.adnu.edu.ph',
+  initials: 'CT',
+  role: 'Student',
+  status: 'Suspended',
+  accountRestriction: {
+    status: 'Suspended',
+    suspendedBy: 'Admin User',
+    date: 'April 20, 2026',
+    reason: 'Repeated false claims in Lost & Found submissions after 3 verified incidents within 30 days.',
+  },
+  basicInfo: {
+    fullName: 'Carlos Tan',
+    email: 'ctan@gbox.adnu.edu.ph',
+    role: 'Student',
+    status: 'Suspended',
+    lastActive: 'Apr 20, 2026 9:00 AM',
+    createdDate: 'Jan 15, 2026',
+    department: '—',
+  },
+  activitySummary: {
+    reservationsSubmitted: 0,
+    claimsMade: 3,
+    lostFoundPosts: 1,
+    device: 'Chrome on Android',
+  },
+  quickActions: [
+    { label: 'Edit Profile', type: 'edit' },
+    { label: 'Change Role', type: 'role' },
+    { label: 'Reset Password', type: 'password' },
+    { label: 'Unsuspend Account', type: 'unsuspend' },
+  ],
+  recentActivity: [
+    { id: '1', text: 'Claim attempt flagged (Apr 19)', date: '' },
+    { id: '2', text: 'L&F post flagged (Apr 15)', date: '' },
+  ],
+};
+
+export type AdminLnFItemDetail = {
+  id: string;
+  itemName: string;
+  location: string;
+  imageUrl: string;
+  postedBy: string;
+  dateReported: string;
+  type: 'FOUND' | 'LOST';
+  status: string;
+  visibility: 'Public' | 'Private';
+  description: string;
+  claims: Array<{
+    id: string;
+    name: string;
+    email: string;
+    date: string;
+    proof: string;
+  }>;
+};
+
+export const adminLnFItemDetailData: AdminLnFItemDetail = {
+  id: 'lnf1',
+  itemName: 'Black iPhone 13',
+  location: "James O'Brien Library — 2nd Floor Study Area",
+  imageUrl:
+    'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=400&h=400&fit=crop',
+  postedBy: 'Library Staff',
+  dateReported: 'April 25, 2026',
+  type: 'FOUND',
+  status: 'Pending Claim',
+  visibility: 'Public',
+  description:
+    'Black iPhone 13 Pro with a cracked screen protector. No case. Found on a study table.',
+  claims: [
+    {
+      id: 'c1',
+      name: 'Mark Villanueva',
+      email: 'mvillanueva@gbox.adnu.edu.ph',
+      date: '2026-04-25',
+      proof: 'Described lock screen wallpaper and last app open correctly',
+    },
+    {
+      id: 'c2',
+      name: 'Joy Lim',
+      email: 'jlim@gbox.adnu.edu.ph',
+      date: '2026-04-26',
+      proof: 'Claims to have bought it last month, no receipt',
+    },
+  ],
+};
+
 export type AdminUserRow = {
   id: string;
   name: string;
