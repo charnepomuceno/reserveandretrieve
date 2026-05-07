@@ -43,29 +43,38 @@ export default function NotificationsPage() {
           </p>
         </div>
 
-        {/* Filter Buttons */}
-        <div className="flex gap-2 mb-8">
-          <Button
-            variant={filter === 'all' ? 'default' : 'outline'}
-            className={filter === 'all' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+        {/* Filter Tabs */}
+        <div className="flex gap-2 mb-8 border-b border-gray-200">
+          <button
             onClick={() => setFilter('all')}
+            className={`px-4 py-3 font-medium transition-colors border-b-2 ${
+              filter === 'all'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
+            }`}
           >
-            All
-          </Button>
-          <Button
-            variant={filter === 'reservation' ? 'default' : 'outline'}
-            className={filter === 'reservation' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+            All ({mockOrgNotifications.length})
+          </button>
+          <button
             onClick={() => setFilter('reservation')}
+            className={`px-4 py-3 font-medium transition-colors border-b-2 ${
+              filter === 'reservation'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
+            }`}
           >
-            Reservations
-          </Button>
-          <Button
-            variant={filter === 'system' ? 'default' : 'outline'}
-            className={filter === 'system' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+            Reservations ({mockOrgNotifications.filter((n) => n.type === 'reservation').length})
+          </button>
+          <button
             onClick={() => setFilter('system')}
+            className={`px-4 py-3 font-medium transition-colors border-b-2 ${
+              filter === 'system'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
+            }`}
           >
-            System
-          </Button>
+            System ({mockOrgNotifications.filter((n) => n.type === 'system').length})
+          </button>
         </div>
 
         {/* Notifications List */}

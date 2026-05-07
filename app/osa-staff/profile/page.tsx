@@ -45,7 +45,7 @@ export default function OSAStaffProfile() {
               <CardContent className="space-y-4">
                 <div>
                   <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Staff ID</p>
-                  <p className="font-semibold text-gray-900">OSA-2024-001</p>
+                  <p className="font-semibold text-gray-900">OSA-2026-001</p>
                 </div>
                 <div className="border-t pt-4">
                   <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Department</p>
