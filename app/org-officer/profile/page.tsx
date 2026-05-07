@@ -52,14 +52,14 @@ export default function ProfilePage() {
                     <Activity className="w-4 h-4" />
                     <span>Registered Since</span>
                   </div>
-                  <p className="font-semibold text-gray-900">January 15, 2024</p>
+                  <p className="font-semibold text-gray-900">January 15, 2026</p>
                 </div>
                 <div className="border-t pt-4">
                   <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
                     <Calendar className="w-4 h-4" />
                     <span>Total Reservations</span>
                   </div>
-                  <p className="font-semibold text-gray-900">12</p>
+                  <p className="font-semibold text-gray-900">3</p>
                 </div>
               </CardContent>
             </Card>

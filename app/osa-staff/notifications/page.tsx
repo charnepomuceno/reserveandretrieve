@@ -61,24 +61,24 @@ export default function OSAStaffNotifications() {
         </div>
 
         {/* Filter Tabs */}
-        <Card className="mb-8 mt-8">
-          <CardHeader>
-            <div className="flex gap-4 border-b">
-              {['all', 'unread', 'read'].map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setFilter(tab as any)}
-                  className={`px-4 py-3 font-medium transition-colors border-b-2 ${
-                    filter === tab
-                      ? 'border-green-600 text-green-600'
-                      : 'border-transparent text-gray-600 hover:text-gray-900'
-                  }`}
-                >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  <span className="ml-2 text-sm">({filteredNotifications.length})</span>
-                </button>
-              ))}
-            </div>
+        <div className="flex gap-4 mb-8 border-b border-gray-200">
+          {['all', 'unread', 'read'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setFilter(tab as any)}
+              className={`px-4 py-3 font-medium transition-colors border-b-2 ${
+                filter === tab
+                  ? 'border-green-600 text-green-600'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)} ({filteredNotifications.length})
+            </button>
+          ))}
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader className="border-b pb-0">
           </CardHeader>
 
           <CardContent className="pt-6">
