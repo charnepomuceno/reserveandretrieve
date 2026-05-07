@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth-context';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -21,65 +22,63 @@ export default function LoginPage() {
     setError('');
     setIsLoading(true);
 
-    if (!email || !password) {
-      setError('Please enter both email and password');
+    setTimeout(() => {
+      const success = login(email, password);
+      if (success) {
+        router.push('/dashboard');
+      } else {
+        setError('Invalid email or password. Please try again.');
+      }
       setIsLoading(false);
-      return;
-    }
+    }, 500);
+  };
 
-    const success = login(email, password);
-    if (success) {
-      router.push('/dashboard');
-    } else {
-      setError('Invalid email or password. Please check your credentials.');
-      setIsLoading(false);
-    }
+  const handleDemoLogin = (demoEmail: string, demoPassword: string) => {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+    setError('');
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <img 
-            src="/adnu-rsrv-logo.png" 
-            alt="Reserve and Retrieve Logo" 
-            className="h-20 mx-auto mb-6"
-          />
-        </div>
-
-        <Card className="shadow-lg">
+        {/* Login Card */}
+        <Card className="border-0 shadow-lg">
           <CardHeader className="space-y-2">
-            <CardTitle className="text-2xl text-center">Login</CardTitle>
-            <p className="text-sm text-gray-600 text-center">Sign in to access your dashboard</p>
+            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardDescription>
+              Enter your credentials to access your dashboard
+            </CardDescription>
           </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Error Alert */}
+            {error && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
 
-          <CardContent>
+            {/* Login Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
-              {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex gap-2">
-                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-red-700">{error}</p>
-                </div>
-              )}
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address
+              <div className="space-y-2">
+                <label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  Email
                 </label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="your.email@adnu.edu.ph"
+                  placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
+                  required
                   className="border-gray-300"
                 />
               </div>
 
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="space-y-2">
+                <label htmlFor="password" className="text-sm font-medium text-gray-700">
                   Password
                 </label>
                 <Input
@@ -89,6 +88,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
+                  required
                   className="border-gray-300"
                 />
               </div>
@@ -96,32 +96,63 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium h-10"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold h-10"
               >
-                {isLoading ? 'Signing in...' : 'Sign In'}
+                {isLoading ? 'Logging in...' : 'Login'}
               </Button>
             </form>
 
             {/* Demo Credentials */}
-            <div className="mt-8 pt-6 border-t">
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide mb-3">Demo Credentials</p>
-              <div className="space-y-3 text-xs">
-                <div className="bg-blue-50 p-3 rounded">
-                  <p className="font-medium text-gray-900">Admin</p>
-                  <p className="text-gray-600">osa@adnu.edu.ph / admin123</p>
-                </div>
-                <div className="bg-green-50 p-3 rounded">
-                  <p className="font-medium text-gray-900">OSA Staff</p>
-                  <p className="text-gray-600">osa@adnu.edu.ph / staff123</p>
-                </div>
-                <div className="bg-purple-50 p-3 rounded">
-                  <p className="font-medium text-gray-900">Organization Officer</p>
-                  <p className="text-gray-600">tactics_org@adnu.edu.ph / officer123</p>
-                </div>
-                <div className="bg-yellow-50 p-3 rounded">
-                  <p className="font-medium text-gray-900">Student</p>
-                  <p className="text-gray-600">student@adnu.edu.ph / student123</p>
-                </div>
+            <div className="border-t pt-6">
+              <p className="text-sm font-medium text-gray-700 mb-3">Demo Accounts (ADNU)</p>
+              <div className="space-y-2">
+                <Button
+                  variant="outline"
+                  onClick={() => handleDemoLogin('osa@adnu.edu.ph', 'admin123')}
+                  className="w-full justify-start text-left h-auto py-2 px-3 border-purple-200 hover:bg-purple-50"
+                  disabled={isLoading}
+                >
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-purple-900">Admin</span>
+                    <span className="text-xs text-purple-700">osa@adnu.edu.ph</span>
+                  </div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => handleDemoLogin('tactics_org@adnu.edu.ph', 'officer123')}
+                  className="w-full justify-start text-left h-auto py-2 px-3 border-blue-200 hover:bg-blue-50"
+                  disabled={isLoading}
+                >
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-blue-900">TACTICS Organization</span>
+                    <span className="text-xs text-blue-700">tactics_org@adnu.edu.ph</span>
+                  </div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => handleDemoLogin('osa@adnu.edu.ph', 'staff123')}
+                  className="w-full justify-start text-left h-auto py-2 px-3 border-green-200 hover:bg-green-50"
+                  disabled={isLoading}
+                >
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-green-900">OSA Staff</span>
+                    <span className="text-xs text-green-700">osa@adnu.edu.ph</span>
+                  </div>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => handleDemoLogin('student@adnu.edu.ph', 'student123')}
+                  className="w-full justify-start text-left h-auto py-2 px-3 border-red-200 hover:bg-red-50"
+                  disabled={isLoading}
+                >
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-red-900">User</span>
+                    <span className="text-xs text-red-700">user@gmail.com</span>
+                  </div>
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -129,6 +160,9 @@ export default function LoginPage() {
 
         {/* Back to Home */}
         <div className="text-center mt-6">
+          <p className="text-xs text-gray-600 mb-3">
+            This is a demo application. Use demo credentials to login.
+          </p>
           <button
             onClick={() => router.push('/')}
             className="text-sm text-blue-600 hover:text-blue-700 font-medium"
@@ -138,5 +172,7 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+
+    
   );
 }

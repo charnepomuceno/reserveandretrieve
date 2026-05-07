@@ -138,10 +138,6 @@ export default function PublicLostFound() {
                       <p className="text-xs text-gray-500 uppercase tracking-wide">Category</p>
                       <p className="text-sm font-medium text-gray-700">{item.category}</p>
                     </div>
-                    <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">Reported</p>
-                      <p className="text-sm text-gray-700">{item.dateReported}</p>
-                    </div>
                   </div>
                 </CardContent>
               </Card>

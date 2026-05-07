@@ -94,7 +94,7 @@ export default function ProfilePage() {
                   <textarea
                     placeholder="Describe your organization's mission and activities..."
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    rows={4}
+                    rows={2}
                   />
                 </div>
                 <Button className="bg-blue-600 hover:bg-blue-700">Save Changes</Button>

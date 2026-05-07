@@ -17,7 +17,7 @@ export default function StudentProfile() {
     <DashboardLayout>
       <div className="p-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">Profile</h1>
-        <p className="text-gray-600 mb-8">Manage your student account and preferences</p>
+        <p className="text-gray-600 mb-8">Manage your account and preferences</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Profile Card */}
@@ -88,12 +88,7 @@ export default function StudentProfile() {
                   </label>
                   <Input defaultValue={user.email} disabled className="border-gray-300 bg-gray-50" />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Phone Number
-                  </label>
-                  <Input placeholder="+63 (XXX) XXX-XXXX" className="border-gray-300" />
-                </div>
+                
                 <Button className="bg-red-600 hover:bg-red-700">Save Changes</Button>
               </CardContent>
             </Card>
@@ -103,7 +98,7 @@ export default function StudentProfile() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Bell className="w-5 h-5 text-blue-600" />
-                  Notification Preferences
+                  Email Notification Preferences
                 </CardTitle>
                 <CardDescription>Control how you receive updates</CardDescription>
               </CardHeader>

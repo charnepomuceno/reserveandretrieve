@@ -178,14 +178,7 @@ export default function OSAStaffLostFound() {
                           <CheckCircle className="w-4 h-4" />
                           Approve Claim
                         </Button>
-                        <Button
-                          onClick={() => handleClaimReject(item.id)}
-                          variant="outline"
-                          className="flex-1 border-gray-300 text-gray-600 hover:bg-gray-50 text-xs"
-                        >
-                          <XCircle className="w-4 h-4" />
-                          Deny Claim
-                        </Button>
+                        
                       </div>
                     )}
                     </div>

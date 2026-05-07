@@ -128,7 +128,11 @@ export default function ReportFoundItem() {
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Browse</span>
           </Link>
-          <div className="text-xl font-bold text-blue-600">Reserve. Retrieve</div>
+          <img 
+            src="/adnu-rsrv-logo.png" 
+            alt="Reserve and Retrieve Logo" 
+            className="h-16"
+          />
         </div>
       </header>
 

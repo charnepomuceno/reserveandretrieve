@@ -36,7 +36,7 @@ export default function AdminSettingsPage() {
 
         <Card className="border-gray-200 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-lg">Notifications</CardTitle>
+            <CardTitle className="text-lg">Email Notifications</CardTitle>
             <CardDescription>Choose what triggers alerts for admins and staff.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
