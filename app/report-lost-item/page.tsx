@@ -39,7 +39,6 @@ export default function ReportLostItem() {
     dateLost: '',
     description: '',
     email: '',
-    phone: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -68,9 +67,6 @@ export default function ReportLostItem() {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
-    }
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Contact phone is required';
     }
 
     setErrors(newErrors);
@@ -320,23 +316,7 @@ export default function ReportLostItem() {
                     )}
                   </div>
 
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                      Contact Phone Number
-                    </label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      placeholder="09XXXXXXXXX"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className={errors.phone ? 'border-red-500' : 'border-gray-300'}
-                    />
-                    {errors.phone && (
-                      <p className="text-sm text-red-600 mt-1">{errors.phone}</p>
-                    )}
-                  </div>
+
                 </div>
               </div>
 

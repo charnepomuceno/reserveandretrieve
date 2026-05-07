@@ -33,13 +33,9 @@ const CATEGORIES = [
 export default function ReportFoundItem() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    itemName: '',
-    category: '',
     location: '',
     dateFound: '',
-    description: '',
     email: '',
-    phone: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -49,28 +45,16 @@ export default function ReportFoundItem() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.itemName.trim()) {
-      newErrors.itemName = 'Item name is required';
-    }
-    if (!formData.category) {
-      newErrors.category = 'Category is required';
-    }
     if (!formData.location.trim()) {
       newErrors.location = 'Location is required';
     }
     if (!formData.dateFound) {
       newErrors.dateFound = 'Date found is required';
     }
-    if (!formData.description.trim()) {
-      newErrors.description = 'Description is required';
-    }
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
-    }
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Contact phone is required';
     }
 
     setErrors(newErrors);
@@ -175,56 +159,14 @@ export default function ReportFoundItem() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Item Details Section */}
+              {/* Found Item Details Section */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Found Item Details</h3>
                 
                 <div className="grid md:grid-cols-2 gap-4 mb-4">
                   <div>
-                    <label htmlFor="itemName" className="block text-sm font-medium text-gray-700 mb-2">
-                      Item Name
-                    </label>
-                    <Input
-                      id="itemName"
-                      name="itemName"
-                      placeholder="e.g. Blue backpack"
-                      value={formData.itemName}
-                      onChange={handleChange}
-                      className={errors.itemName ? 'border-red-500' : 'border-gray-300'}
-                    />
-                    {errors.itemName && (
-                      <p className="text-sm text-red-600 mt-1">{errors.itemName}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
-                      Category
-                    </label>
-                    <select
-                      id="category"
-                      name="category"
-                      value={formData.category}
-                      onChange={handleChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                        errors.category ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                    >
-                      <option value="">Select a category</option>
-                      {CATEGORIES.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
-                    {errors.category && (
-                      <p className="text-sm text-red-600 mt-1">{errors.category}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4 mb-4">
-                  <div>
                     <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
-                      Location Found
+                      Location Found <span className="text-red-600">*</span>
                     </label>
                     <div className="flex gap-2">
                       <select
@@ -257,7 +199,7 @@ export default function ReportFoundItem() {
 
                   <div>
                     <label htmlFor="dateFound" className="block text-sm font-medium text-gray-700 mb-2">
-                      Date Found
+                      Date Found <span className="text-red-600">*</span>
                     </label>
                     <Input
                       id="dateFound"
@@ -274,28 +216,8 @@ export default function ReportFoundItem() {
                 </div>
 
                 <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-                    Description
-                  </label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    placeholder="Describe the item and any distinguishing details"
-                    value={formData.description}
-                    onChange={handleChange}
-                    rows={4}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none ${
-                      errors.description ? 'border-red-500' : 'border-gray-300'
-                    }`}
-                  />
-                  {errors.description && (
-                    <p className="text-sm text-red-600 mt-1">{errors.description}</p>
-                  )}
-                </div>
-
-                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Upload Image
+                    Upload Image (Optional)
                   </label>
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors cursor-pointer">
                     <svg className="w-12 h-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -310,42 +232,22 @@ export default function ReportFoundItem() {
               <div className="border-t pt-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Contact Information</h3>
                 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address
-                    </label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="your.email@example.com"
-                      value={formData.email}
-                      onChange={handleChange}
-                      className={errors.email ? 'border-red-500' : 'border-gray-300'}
-                    />
-                    {errors.email && (
-                      <p className="text-sm text-red-600 mt-1">{errors.email}</p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                      Contact Phone Number
-                    </label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      placeholder="09XXXXXXXXX"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className={errors.phone ? 'border-red-500' : 'border-gray-300'}
-                    />
-                    {errors.phone && (
-                      <p className="text-sm text-red-600 mt-1">{errors.phone}</p>
-                    )}
-                  </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address <span className="text-red-600">*</span>
+                  </label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="your.email@example.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={errors.email ? 'border-red-500' : 'border-gray-300'}
+                  />
+                  {errors.email && (
+                    <p className="text-sm text-red-600 mt-1">{errors.email}</p>
+                  )}
                 </div>
               </div>
 

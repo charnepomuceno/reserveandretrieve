@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -21,8 +20,7 @@ export default function PublicLostFound() {
 
   const filteredItems = publicItems.filter((item) => {
     const matchesSearch = 
-      item.itemName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+      item.itemName.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = 
       filterCategory === 'All Categories' || item.category === filterCategory;
     return matchesSearch && matchesCategory;
@@ -42,18 +40,17 @@ export default function PublicLostFound() {
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="text-2xl font-bold text-blue-600">Reserve.</div>
-            <div className="text-2xl font-bold text-blue-600">Retrieve</div>
-          </div>
+          <img 
+            src="/adnu-rsrv-logo.png" 
+            alt="Reserve and Retrieve Logo" 
+            className="h-16"
+          />
           
           <div className="flex gap-3">
-            <Link href="/login">
-              <Button variant="outline" className="gap-2">
-                <LogIn className="w-4 h-4" />
-                Login
-              </Button>
-            </Link>
+            <Button variant="outline" className="gap-2" onClick={() => window.location.href = '/login'}>
+              <LogIn className="w-4 h-4" />
+              Login
+            </Button>
             <Link href="/report-lost-item">
               <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
                 <FileText className="w-4 h-4" />
@@ -84,7 +81,7 @@ export default function PublicLostFound() {
             <div className="relative">
               <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
               <Input
-                placeholder="Search by item name, description, or category..."
+                placeholder="Search by item name..."
                 className="pl-10 h-12 border-gray-300 text-base"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -142,19 +139,9 @@ export default function PublicLostFound() {
                       <p className="text-sm font-medium text-gray-700">{item.category}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">Location</p>
-                      <p className="text-sm text-gray-700 line-clamp-2">{item.location}</p>
-                    </div>
-                    <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide">Reported</p>
                       <p className="text-sm text-gray-700">{item.dateReported}</p>
                     </div>
-                  </div>
-
-                  <div className="border-t pt-4 mt-4">
-                    <p className="text-xs text-gray-500 mb-2 line-clamp-2">
-                      {item.description}
-                    </p>
                   </div>
                 </CardContent>
               </Card>
