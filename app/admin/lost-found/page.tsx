@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { adminLnFRows } from '@/lib/admin-mock-data';
 import { AdminShell } from '@/components/admin/admin-shell';
@@ -154,9 +155,11 @@ export default function AdminLostFoundPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm" className="gap-1 text-blue-700 hover:bg-blue-50">
-                          View
-                        </Button>
+                        <Link href={`/admin/lost-found/${r.id}`}>
+                          <Button variant="ghost" size="sm" className="gap-1 text-blue-700 hover:bg-blue-50">
+                            View
+                          </Button>
+                        </Link>
                         <Button variant="outline" size="icon" className="h-9 w-9 border-gray-200 text-gray-600" aria-label="Flag">
                           <Flag className="h-4 w-4" />
                         </Button>

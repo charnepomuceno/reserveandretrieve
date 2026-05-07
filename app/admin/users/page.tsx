@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { adminUserRows } from '@/lib/admin-mock-data';
 import { AdminShell } from '@/components/admin/admin-shell';
@@ -167,10 +168,10 @@ export default function AdminUsersPage() {
                     <TableCell className="text-sm tabular-nums text-gray-600">{u.lastActive}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex flex-wrap justify-end gap-x-3 gap-y-1">
-                        <button type="button" className="inline-flex items-center gap-1 text-sm font-medium text-blue-700 hover:underline">
+                        <Link href={`/admin/users/${u.id}`} className="inline-flex items-center gap-1 text-sm font-medium text-blue-700 hover:underline">
                           <Eye className="h-4 w-4" />
                           View
-                        </button>
+                        </Link>
                         <button type="button" className="inline-flex items-center gap-1 text-sm font-medium text-gray-700 hover:underline">
                           <Pencil className="h-4 w-4" />
                           Edit
