@@ -160,9 +160,6 @@ export default function AdminLostFoundPage() {
                             View
                           </Button>
                         </Link>
-                        <Button variant="outline" size="icon" className="h-9 w-9 border-gray-200 text-gray-600" aria-label="Flag">
-                          <Flag className="h-4 w-4" />
-                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
