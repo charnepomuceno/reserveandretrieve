@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { mockLostFoundItems } from '@/lib/mock-data';
-import { Search, LogIn, FileText } from 'lucide-react';
+import { Search, LogIn } from 'lucide-react';
 
 export default function PublicLostFound() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -36,7 +36,7 @@ export default function PublicLostFound() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -51,18 +51,6 @@ export default function PublicLostFound() {
               <LogIn className="w-4 h-4" />
               Login
             </Button>
-            <Link href="/report-lost-item">
-              <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-                <FileText className="w-4 h-4" />
-                Report Lost
-              </Button>
-            </Link>
-            <Link href="/report-found-item">
-              <Button className="gap-2 bg-green-600 hover:bg-green-700">
-                <FileText className="w-4 h-4" />
-                Report Found
-              </Button>
-            </Link>
           </div>
         </div>
       </header>
@@ -130,10 +118,10 @@ export default function PublicLostFound() {
                   </div>
                 )}
 
-                <CardContent className="pt-4 flex-grow flex flex-col">
+                <CardContent className="pt-4 grow flex flex-col">
                   <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{item.itemName}</h3>
                   
-                  <div className="space-y-2 mb-4 flex-grow">
+                  <div className="space-y-2 mb-4 grow">
                     <div>
                       <p className="text-xs text-gray-500 uppercase tracking-wide">Category</p>
                       <p className="text-sm font-medium text-gray-700">{item.category}</p>

@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { mockLostFoundItems } from '@/lib/mock-data';
 import { useRouter } from 'next/navigation';
-import { Package, FileText, Bell, ArrowRight } from 'lucide-react';
+import { Package, Bell, ArrowRight, Map } from 'lucide-react';
 
 export default function StudentDashboard() {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function StudentDashboard() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-medium text-gray-600 flex items-center gap-2">
-                <FileText className="w-4 h-4" />
+                <Package className="w-4 h-4" />
                 My Reports
               </CardTitle>
             </CardHeader>
@@ -75,7 +75,7 @@ export default function StudentDashboard() {
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Button
                 onClick={() => router.push('/student/lost-found')}
                 className="bg-blue-600 hover:bg-blue-700 gap-2 h-auto py-3"
@@ -84,20 +84,12 @@ export default function StudentDashboard() {
                 <span>Browse Lost Items</span>
               </Button>
               <Button
-                onClick={() => router.push('/student/report-lost')}
+                onClick={() => router.push('/student/heatmap')}
                 variant="outline"
-                className="border-red-300 text-red-600 hover:bg-red-50 gap-2 h-auto py-3"
+                className="border-orange-300 text-orange-600 hover:bg-orange-50 gap-2 h-auto py-3"
               >
-                <FileText className="w-4 h-4" />
-                <span>Report Lost Item</span>
-              </Button>
-              <Button
-                onClick={() => router.push('/student/report-found')}
-                variant="outline"
-                className="border-green-300 text-green-600 hover:bg-green-50 gap-2 h-auto py-3"
-              >
-                <FileText className="w-4 h-4" />
-                <span>Report Found Item</span>
+                <Map className="w-4 h-4" />
+                <span>View Heatmap</span>
               </Button>
             </div>
           </CardContent>
