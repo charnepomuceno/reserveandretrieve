@@ -19,7 +19,7 @@ export default function DashboardRoot() {
     const dashboardRoutes: Record<string, string> = {
       'org-officer': '/org-officer/dashboard',
       'osa-staff': '/osa-staff/dashboard',
-      student: '/student/dashboard',
+      student: '/student/lost-found',
       admin: '/admin/dashboard',
     };
 
