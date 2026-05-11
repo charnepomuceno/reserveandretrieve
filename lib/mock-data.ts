@@ -161,7 +161,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Bonoan 1st Floor - Near the Stairs',
     dateReported: '2026-06-02',
     status: 'lost',
-    imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/blue-backpack.jpg',
   },
   {
     id: 'item-2',
@@ -171,7 +171,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Library 2nd Floor, Solo Cubicles',
     dateReported: '2026-05-9',
     status: 'unclaimed',
-    imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/silver-watch.jpg',
   },
   {
     id: 'item-3',
@@ -181,7 +181,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Phelan Building Hallway, Near Room P112',
     dateReported: '2026-04-18',
     status: 'claimed',
-    imageUrl: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/student-id-card.jpg',
   },
   {
     id: 'item-4',
@@ -191,7 +191,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Xavier Hall, Back of the Stage',
     dateReported: '2026-05-7',
     status: 'found',
-    imageUrl: 'https://images.unsplash.com/photo-1520034475321-cbe63696469a?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/black-umbrella.jpg',
   },
   {
     id: 'item-5',
@@ -201,7 +201,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Covered Courts',
     dateReported: '2026-04-16',
     status: 'lost',
-    imageUrl: 'https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/wireless-earbuds.jpg',
   },
   {
     id: 'item-6',
@@ -211,7 +211,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Dolan Building Hallway',
     dateReported: '2026-05-15',
     status: 'unclaimed',
-    imageUrl: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/notebook.jpg',
   },
   {
     id: 'item-7',
@@ -221,7 +221,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Cafeteria - Cashier Area',
     dateReported: '2026-05-21',
     status: 'unclaimed',
-    imageUrl: 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/black-wallet.jpg',
   },
   {
     id: 'item-8',
@@ -231,7 +231,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Rizal Building - Lobby Bench',
     dateReported: '2026-05-22',
     status: 'found',
-    imageUrl: 'https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/keys.jpg',
   },
   {
     id: 'item-9',
@@ -241,7 +241,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Gym - Bleachers',
     dateReported: '2026-05-24',
     status: 'unclaimed',
-    imageUrl: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/water-bottle.jpg',
   },
   {
     id: 'item-10',
@@ -251,7 +251,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Engineering Building - Room E203',
     dateReported: '2026-05-25',
     status: 'found',
-    imageUrl: 'https://images.unsplash.com/photo-1564473185935-5818b1b2d37d?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/calculator.jpg',
   },
   {
     id: 'item-11',
@@ -261,7 +261,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Library 1st Floor - Reading Area',
     dateReported: '2026-05-26',
     status: 'unclaimed',
-    imageUrl: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/eyeglasses.jpg',
   },
   {
     id: 'item-12',
@@ -271,7 +271,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'SHS Building - Room S104',
     dateReported: '2026-05-27',
     status: 'found',
-    imageUrl: 'https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/pencil-case.jpg',
   },
   {
     id: 'item-13',
@@ -281,7 +281,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'CICS Building - Computer Lab',
     dateReported: '2026-05-28',
     status: 'unclaimed',
-    imageUrl: 'https://images.unsplash.com/photo-1583863788434-e58a36330a33?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/usb-c-charger.jpg',
   },
   {
     id: 'item-14',
@@ -291,7 +291,7 @@ export const mockLostFoundItems: LostFoundItem[] = [
     location: 'Bonoan 2nd Floor - Hallway Shelf',
     dateReported: '2026-05-29',
     status: 'found',
-    imageUrl: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/item-images/ring-binder.jpg',
   },
 ];
 
