@@ -58,6 +58,16 @@ export default function PublicLostFound() {
           />
 
           <div className="flex gap-3">
+            <Link href="/report-found-item">
+              <Button className="gap-2 bg-green-600 hover:bg-green-700 text-white">
+                Report Found Item
+              </Button>
+            </Link>
+            <Link href="/report-lost-item">
+              <Button className="gap-2 bg-red-600 hover:bg-red-700 text-white">
+                Report Lost Item
+              </Button>
+            </Link>
             <Button variant="outline" className="gap-2" onClick={() => window.location.href = '/login'}>
               <LogIn className="w-4 h-4" />
               Login

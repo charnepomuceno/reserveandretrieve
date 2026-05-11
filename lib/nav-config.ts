@@ -45,12 +45,6 @@ export const roleNavigation: Record<UserRole, NavItem[]> = {
       path: '/org-officer/reservations',
     },
     {
-      id: 'heatmap',
-      label: 'Lost & Found Heatmap',
-      icon: Map,
-      path: '/org-officer/heatmap',
-    },
-    {
       id: 'profile',
       label: 'Profile',
       icon: User,
