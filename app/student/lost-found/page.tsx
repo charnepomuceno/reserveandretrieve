@@ -1,18 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { mockLostFoundItems } from '@/lib/mock-data';
+import { mockPublicLostFoundItems } from '@/lib/mock-data';
 import { Search, X, Mail } from 'lucide-react';
 
 export default function StudentLostFound() {
-  const router = useRouter();
-  const [items] = useState(mockLostFoundItems);
+  const [items] = useState(mockPublicLostFoundItems);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState<string>('All Categories');
   const [selectedItem, setSelectedItem] = useState<any>(null);
@@ -47,10 +44,20 @@ export default function StudentLostFound() {
   };
 
   return (
-    <DashboardLayout>
-      <div className="p-8">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">Browse Lost Items</h1>
-        <p className="text-gray-600 mb-8">Search for items that match your lost items</p>
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+          <img
+            src="/adnu-rsrv-logo.png"
+            alt="Reserve and Retrieve Logo"
+            className="h-16"
+          />
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Browse Lost &amp; Found Items</h1>
+        <p className="text-gray-600 mb-8">Search our database of reported lost and found items.</p>
 
 
         {/* Search */}
@@ -86,11 +93,18 @@ export default function StudentLostFound() {
             {filteredItems.map((item) => (
               <Card key={item.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                 {item.imageUrl && (
-                  <div className="relative">
+                  <div className="relative h-40 bg-gray-200">
                     <img
                       src={item.imageUrl}
                       alt={item.itemName}
-                      className="w-full h-40 object-cover"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const img = e.currentTarget;
+                        if (!img.dataset.fallbackApplied) {
+                          img.dataset.fallbackApplied = '1';
+                          img.src = '/item-placeholder.svg';
+                        }
+                      }}
                     />
                     <Badge className={`absolute top-2 right-2 ${statusColors[item.status]}`}>
                       {item.status.toUpperCase()}
@@ -133,11 +147,11 @@ export default function StudentLostFound() {
             </CardContent>
           </Card>
         )}
-      </div>
+      </main>
 
       {/* Ping Modal */}
       {showPingModal && selectedItem && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/35 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <Card className="w-full max-w-md">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
               <CardTitle>Ping Possible Owner</CardTitle>
@@ -183,7 +197,7 @@ export default function StudentLostFound() {
 
       {/* Claim Modal */}
       {showClaimModal && selectedItem && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/35 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <Card className="w-full max-w-md">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
               <CardTitle>Claim Item</CardTitle>
@@ -275,6 +289,6 @@ export default function StudentLostFound() {
           </Card>
         </div>
       )}
-    </DashboardLayout>
+    </div>
   );
 }

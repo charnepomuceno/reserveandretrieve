@@ -141,18 +141,6 @@ export function LoginPage() {
                     <span className="text-xs text-green-700">osa@adnu.edu.ph</span>
                   </div>
                 </Button>
-
-                <Button
-                  variant="outline"
-                  onClick={() => handleDemoLogin('student@adnu.edu.ph', 'student123')}
-                  className="w-full justify-start text-left h-auto py-2 px-3 border-red-200 hover:bg-red-50"
-                  disabled={isLoading}
-                >
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-red-900">Student</span>
-                    <span className="text-xs text-red-700">student@adnu.edu.ph</span>
-                  </div>
-                </Button>
               </div>
             </div>
           </CardContent>

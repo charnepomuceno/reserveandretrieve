@@ -51,13 +51,6 @@ const MOCK_USERS: MockUser[] = [
     name: 'TACTICS Organization',
     role: 'org-officer',
   },
-  {
-    email: 'student@adnu.edu.ph',
-    password: 'student123',
-    id: 'user-4',
-    name: 'Juan Dela Cruz',
-    role: 'student',
-  },
 ];
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
