@@ -17,7 +17,9 @@ export default function PublicLostFound() {
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [pingEmail, setPingEmail] = useState('');
   const [claimDate, setClaimDate] = useState('');
-  const [claimTime, setClaimTime] = useState('');
+  const [claimName, setClaimName] = useState('');
+  const [claimAffiliation, setClaimAffiliation] = useState('');
+  const [claimEmail, setClaimEmail] = useState('');
   
   const publicItems = mockPublicLostFoundItems;
 
@@ -274,7 +276,9 @@ export default function PublicLostFound() {
                 onClick={() => {
                   setShowClaimModal(false);
                   setClaimDate('');
-                  setClaimTime('');
+                  setClaimName('');
+                  setClaimAffiliation('');
+                  setClaimEmail('');
                 }}
               >
                 <X className="w-5 h-5" />
@@ -282,8 +286,49 @@ export default function PublicLostFound() {
             </CardHeader>
             <CardContent className="pt-6 space-y-4">
               <p className="text-sm text-gray-600">
-                Select a date and time to claim your item. Office hours are 7:30 AM - 12:00 PM and 1:00 PM - 5:00 PM.
+                Select a date to claim your item. Visit the OSA office during office hours: 7:30 AM - 12:00 PM and 1:00 PM - 5:00 PM.
               </p>
+
+              <div>
+                <label htmlFor="claim-name" className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                <Input
+                  id="claim-name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  value={claimName}
+                  onChange={(e) => setClaimName(e.target.value)}
+                  className="border-gray-300"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="claim-affiliation" className="block text-sm font-medium text-gray-700 mb-2">Affiliation</label>
+                <select
+                  id="claim-affiliation"
+                  value={claimAffiliation}
+                  onChange={(e) => setClaimAffiliation(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select affiliation</option>
+                  <option value="student">Student</option>
+                  <option value="faculty">Faculty</option>
+                  <option value="staff">Staff</option>
+                  <option value="guest">Guest</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="claim-email" className="block text-sm font-medium text-gray-700 mb-2">Email <span className="text-gray-500 font-normal">(Optional)</span></label>
+                <Input
+                  id="claim-email"
+                  type="email"
+                  placeholder="e.g. student@gbox.adnu.edu.ph"
+                  value={claimEmail}
+                  onChange={(e) => setClaimEmail(e.target.value)}
+                  className="border-gray-300"
+                />
+                <p className="text-xs text-gray-500 mt-1">Providing your email helps the OSA office follow up about your claim status and send you updates. However, it is completely optional.</p>
+              </div>
 
               <div>
                 <label htmlFor="claim-date" className="block text-sm font-medium text-gray-700 mb-2">Claim Date</label>
@@ -297,50 +342,18 @@ export default function PublicLostFound() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="claim-time" className="block text-sm font-medium text-gray-700 mb-2">Claim Time</label>
-                <select
-                  id="claim-time"
-                  value={claimTime}
-                  onChange={(e) => setClaimTime(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Select time</option>
-                  <optgroup label="Morning (7:30 AM - 12:00 PM)">
-                    <option value="07:30">7:30 AM</option>
-                    <option value="08:00">8:00 AM</option>
-                    <option value="08:30">8:30 AM</option>
-                    <option value="09:00">9:00 AM</option>
-                    <option value="09:30">9:30 AM</option>
-                    <option value="10:00">10:00 AM</option>
-                    <option value="10:30">10:30 AM</option>
-                    <option value="11:00">11:00 AM</option>
-                    <option value="11:30">11:30 AM</option>
-                    <option value="12:00">12:00 PM</option>
-                  </optgroup>
-                  <optgroup label="Afternoon (1:00 PM - 5:00 PM)">
-                    <option value="13:00">1:00 PM</option>
-                    <option value="13:30">1:30 PM</option>
-                    <option value="14:00">2:00 PM</option>
-                    <option value="14:30">2:30 PM</option>
-                    <option value="15:00">3:00 PM</option>
-                    <option value="15:30">3:30 PM</option>
-                    <option value="16:00">4:00 PM</option>
-                    <option value="16:30">4:30 PM</option>
-                    <option value="17:00">5:00 PM</option>
-                  </optgroup>
-                </select>
-              </div>
-
               <Button
                 onClick={() => {
-                  if (claimDate && claimTime) {
-                    alert(`Claim scheduled for ${claimDate} at ${claimTime}. You will be notified when ready.`);
+                  if (claimDate && claimName && claimAffiliation) {
+                    const emailNote = claimEmail ? ` A confirmation has been sent to ${claimEmail}.` : '';
+                    alert(`Claim scheduled for ${claimDate}.${emailNote} Please visit the OSA office to collect your item.`);
                     setShowClaimModal(false);
                     setClaimDate('');
-                    setClaimTime('');
+                    setClaimName('');
+                    setClaimAffiliation('');
+                    setClaimEmail('');
                   } else {
-                    alert('Please select both date and time.');
+                    alert('Please fill in all required fields (Name, Affiliation, and Date).');
                   }
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700"
