@@ -14,7 +14,7 @@ export default function ReportFoundItemPage() {
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
-  const [dateFound, setDateFound] = useState('');
+  const [dateFound, setDateFound] = useState(new Date().toISOString().split('T')[0]);
 
   const handleSubmit = () => {
     if (!itemName || !category || !location || !dateFound) {

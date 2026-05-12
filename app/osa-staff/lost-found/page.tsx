@@ -25,7 +25,7 @@ export default function OSAStaffLostFound() {
     itemName: '',
     category: '',
     status: 'lost' as 'lost' | 'found' | 'claimed' | 'unclaimed',
-    dateReported: '',
+    dateReported: new Date().toISOString().split('T')[0],
     description: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});

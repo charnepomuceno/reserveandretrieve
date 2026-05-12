@@ -16,7 +16,7 @@ export default function PublicLostFound() {
   const [showPingModal, setShowPingModal] = useState(false);
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [pingEmail, setPingEmail] = useState('');
-  const [claimDate, setClaimDate] = useState('');
+  const [claimDate, setClaimDate] = useState(new Date().toISOString().split('T')[0]);
   const [claimName, setClaimName] = useState('');
   const [claimAffiliation, setClaimAffiliation] = useState('');
   const [claimEmail, setClaimEmail] = useState('');

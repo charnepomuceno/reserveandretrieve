@@ -16,7 +16,7 @@ export default function StudentLostFound() {
   const [showPingModal, setShowPingModal] = useState(false);
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [pingEmail, setPingEmail] = useState('');
-  const [claimDate, setClaimDate] = useState('');
+  const [claimDate, setClaimDate] = useState(new Date().toISOString().split('T')[0]);
   const [claimTime, setClaimTime] = useState('');
 
   const filteredItems = items.filter((item) => {

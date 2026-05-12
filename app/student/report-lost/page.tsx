@@ -14,7 +14,7 @@ export default function ReportLostItemPage() {
   const [category, setCategory] = useState('');
   const [location, setLocation] = useState('');
   const [description, setDescription] = useState('');
-  const [dateLost, setDateLost] = useState('');
+  const [dateLost, setDateLost] = useState(new Date().toISOString().split('T')[0]);
 
   const handleSubmit = () => {
     if (!itemName || !category || !location || !dateLost) {

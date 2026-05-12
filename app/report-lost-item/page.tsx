@@ -48,7 +48,7 @@ export default function ReportLostItem() {
     itemName: '',
     category: '',
     location: '',
-    dateLost: '',
+    dateLost: new Date().toISOString().split('T')[0],
     description: '',
     email: '',
   });

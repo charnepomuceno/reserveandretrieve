@@ -34,7 +34,7 @@ export function MakeReservationModal({
   onSubmit,
 }: MakeReservationModalProps) {
   const [formData, setFormData] = useState<ReservationFormData>({
-    eventDate: '',
+    eventDate: new Date().toISOString().split('T')[0],
     eventTime: '',
     venue: '',
     attendees: 0,

@@ -46,7 +46,7 @@ export default function ReportFoundItem() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     location: '',
-    dateFound: '',
+    dateFound: new Date().toISOString().split('T')[0],
     email: '',
   });
 
