@@ -27,6 +27,13 @@ export interface LostFoundItem {
   dateReported: string;
   status: 'lost' | 'found' | 'claimed' | 'unclaimed';
   imageUrl?: string;
+  claimeeDetails?: {
+    name: string;
+    affiliation: string;
+    email?: string;
+    claimDate: string;
+    claimMethod: 'manual' | 'request';
+  };
 }
 
 export const mockReservations: Reservation[] = [
@@ -182,6 +189,13 @@ export const mockLostFoundItems: LostFoundItem[] = [
     dateReported: '2026-04-18',
     status: 'claimed',
     imageUrl: '/item-images/student-id-card.jpg',
+    claimeeDetails: {
+      name: 'Juan Dela Cruz',
+      affiliation: 'student',
+      email: 'juan.delacruz@gbox.adnu.edu.ph',
+      claimDate: '2026-04-20',
+      claimMethod: 'request',
+    },
   },
   {
     id: 'item-4',

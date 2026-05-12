@@ -30,15 +30,60 @@ export default function OSAStaffLostFound() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const [isClaimModalOpen, setIsClaimModalOpen] = useState(false);
+  const [selectedClaimItem, setSelectedClaimItem] = useState<any>(null);
+  const [claimForm, setClaimForm] = useState({
+    name: '',
+    affiliation: '',
+    email: '',
+    claimDate: new Date().toISOString().split('T')[0],
+    claimMethod: 'manual' as 'manual' | 'request',
+  });
+  const [claimErrors, setClaimErrors] = useState<Record<string, string>>({});
+
   const filteredItems = items.filter((item) => {
     if (activeTab === 'all') return true;
     return item.status === activeTab;
   });
 
-  const handleClaimApprove = (id: string) => {
+  const handleClaimApprove = (item: any) => {
+    setSelectedClaimItem(item);
+    setClaimForm({
+      name: '',
+      affiliation: '',
+      email: '',
+      claimDate: new Date().toISOString().split('T')[0],
+      claimMethod: 'manual',
+    });
+    setClaimErrors({});
+    setIsClaimModalOpen(true);
+  };
+
+  const handleClaimSubmit = () => {
+    const newErrors: Record<string, string> = {};
+    if (!claimForm.name.trim()) newErrors.name = 'Name is required';
+    if (!claimForm.affiliation.trim()) newErrors.affiliation = 'Affiliation is required';
+    if (!claimForm.claimDate) newErrors.claimDate = 'Claim date is required';
+
+    setClaimErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
     setItems(items.map((item) =>
-      item.id === id ? { ...item, status: 'claimed' as const } : item
+      item.id === selectedClaimItem.id ? {
+        ...item,
+        status: 'claimed' as const,
+        claimeeDetails: {
+          name: claimForm.name.trim(),
+          affiliation: claimForm.affiliation.trim(),
+          email: claimForm.email.trim() || undefined,
+          claimDate: claimForm.claimDate,
+          claimMethod: claimForm.claimMethod,
+        },
+      } : item
     ));
+
+    setIsClaimModalOpen(false);
+    setSelectedClaimItem(null);
   };
 
   const handleClaimReject = (id: string) => {
@@ -297,6 +342,118 @@ export default function OSAStaffLostFound() {
           </DialogContent>
         </Dialog>
 
+        {/* Claim Approval Modal */}
+        <Dialog open={isClaimModalOpen} onOpenChange={(open) => {
+          setIsClaimModalOpen(open);
+          if (!open) {
+            setSelectedClaimItem(null);
+            setClaimForm({
+              name: '',
+              affiliation: '',
+              email: '',
+              claimDate: new Date().toISOString().split('T')[0],
+              claimMethod: 'manual',
+            });
+            setClaimErrors({});
+          }
+        }}>
+          <DialogContent className="max-w-md">
+            <ModalHeader>
+              <ModalTitle>Approve Claim</ModalTitle>
+              <DialogDescription>Enter claimee details to approve this claim.</DialogDescription>
+            </ModalHeader>
+
+            <div className="space-y-4">
+              {selectedClaimItem && (
+                <div className="rounded-lg border border-blue-100 bg-blue-50 px-4 py-3">
+                  <p className="text-sm font-medium text-blue-900">Item: {selectedClaimItem.itemName}</p>
+                  <p className="text-xs text-blue-700">Category: {selectedClaimItem.category}</p>
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                  <Input
+                    value={claimForm.name}
+                    onChange={(e) => setClaimForm(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="Enter claimee's full name"
+                    className={claimErrors.name ? 'border-red-500' : 'border-gray-300'}
+                  />
+                  {claimErrors.name && <p className="text-sm text-red-600 mt-1">{claimErrors.name}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Affiliation</label>
+                  <select
+                    value={claimForm.affiliation}
+                    onChange={(e) => setClaimForm(prev => ({ ...prev, affiliation: e.target.value }))}
+                    className={`w-full h-10 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${claimErrors.affiliation ? 'border-red-500' : 'border-gray-300'}`}
+                  >
+                    <option value="">Select affiliation</option>
+                    <option value="student">Student</option>
+                    <option value="faculty">Faculty</option>
+                    <option value="staff">Staff</option>
+                    <option value="guest">Guest</option>
+                  </select>
+                  {claimErrors.affiliation && <p className="text-sm text-red-600 mt-1">{claimErrors.affiliation}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Email <span className="text-gray-500 font-normal">(Optional)</span></label>
+                  <Input
+                    type="email"
+                    value={claimForm.email}
+                    onChange={(e) => setClaimForm(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="e.g. student@gbox.adnu.edu.ph"
+                    className="border-gray-300"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Claim Date</label>
+                  <Input
+                    type="date"
+                    value={claimForm.claimDate}
+                    onChange={(e) => setClaimForm(prev => ({ ...prev, claimDate: e.target.value }))}
+                    className={claimErrors.claimDate ? 'border-red-500' : 'border-gray-300'}
+                    min={new Date().toISOString().split('T')[0]}
+                  />
+                  {claimErrors.claimDate && <p className="text-sm text-red-600 mt-1">{claimErrors.claimDate}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Claim Method</label>
+                  <select
+                    value={claimForm.claimMethod}
+                    onChange={(e) => setClaimForm(prev => ({ ...prev, claimMethod: e.target.value as 'manual' | 'request' }))}
+                    className="w-full h-10 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  >
+                    <option value="manual">Manual Entry</option>
+                    <option value="request">From Claim Request</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-4">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsClaimModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleClaimSubmit}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  Approve Claim
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         {/* Tabs */}
         <Card>
           <CardHeader>
@@ -375,12 +532,31 @@ export default function OSAStaffLostFound() {
                           <p className="text-xs text-gray-500 uppercase tracking-wide">Reported</p>
                           <p className="text-sm text-gray-700">{item.dateReported}</p>
                         </div>
+                        {item.claimeeDetails && (
+                          <>
+                            <div>
+                              <p className="text-xs text-gray-500 uppercase tracking-wide">Claimed By</p>
+                              <p className="text-sm text-gray-700">{item.claimeeDetails.name}</p>
+                              <p className="text-xs text-gray-600">{item.claimeeDetails.affiliation}</p>
+                            </div>
+                            <div>
+                              <p className="text-xs text-gray-500 uppercase tracking-wide">Claim Date</p>
+                              <p className="text-sm text-gray-700">{item.claimeeDetails.claimDate}</p>
+                            </div>
+                            {item.claimeeDetails.email && (
+                              <div>
+                                <p className="text-xs text-gray-500 uppercase tracking-wide">Email</p>
+                                <p className="text-sm text-gray-700">{item.claimeeDetails.email}</p>
+                              </div>
+                            )}
+                          </>
+                        )}
                       </div>
 
                     {item.status === 'unclaimed' && (
                       <div className="flex gap-3 pt-4 border-t">
                         <Button
-                          onClick={() => handleClaimApprove(item.id)}
+                          onClick={() => handleClaimApprove(item)}
                           className="flex-1 bg-green-600 hover:bg-green-700 gap-2 text-xs"
                         >
                           <CheckCircle className="w-4 h-4" />
